@@ -18,10 +18,3 @@ fn main() -> anyhow::Result<()> {
     };
     Ok(())
 }
-
-#[cfg(test)]
-mod tests {
-
-    #[test]
-    fn test_process_csv() {}
-}
