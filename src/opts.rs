@@ -12,16 +12,32 @@ pub struct Opts {
 
 #[derive(Debug, Subcommand)]
 pub enum SubCommand {
+    #[command(name = "csv", about = "解析csv文件")]
     CSV(CsvOpts),
+    #[command(name = "genpass", about = "generate random pass")]
+    GenPass(GenPassOpts),
 }
 
-// 类型支持
-#[derive(Debug, Clone, Copy)]
-pub enum OutputFormat {
-    JSON,
-    YAML,
+#[derive(Debug, Parser)]
+pub struct GenPassOpts {
+    #[arg(short, long, default_value = "16")]
+    /// generate pass length
+    pub length: u8,
+    #[arg(short, long, default_value = "true")]
+    /// include upper case
+    pub upper: bool,
+    #[arg(long, default_value = "true")]
+    /// include lower case
+    pub lower: bool,
+    #[arg(short, long, default_value = "true")]
+    /// include number
+    pub number: bool,
+    #[arg(short, long, default_value = "true")]
+    /// include symbol
+    pub symbol: bool,
 }
 
+// ============================ csv 命令相关 ========================================
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
     #[arg(short, long, value_parser = verity_input_file)]
@@ -34,6 +50,13 @@ pub struct CsvOpts {
     #[arg(long, default_value = "json", value_parser = parser_format)]
     /// 设置输出格式，目前支持json和yaml,如果不指定输出文件名也不指定输出格式，那么将自动生成为output.json
     pub format: OutputFormat,
+}
+
+// 类型支持
+#[derive(Debug, Clone, Copy)]
+pub enum OutputFormat {
+    JSON,
+    YAML,
 }
 
 // 验证输入文件是否存在

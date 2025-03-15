@@ -1,5 +1,5 @@
 use clap::Parser;
-use rcli::{process_csv, Opts, SubCommand};
+use rcli::{generate, process_csv, Opts, SubCommand};
 
 fn main() -> anyhow::Result<()> {
     let cli = Opts::parse();
@@ -14,6 +14,15 @@ fn main() -> anyhow::Result<()> {
             };
             // 添加format参数使得用户可以解析更多种文件格式
             process_csv(&csv.input, output, csv.format)?;
+        }
+        SubCommand::GenPass(pass) => {
+            generate(
+                pass.length,
+                pass.upper,
+                pass.lower,
+                pass.number,
+                pass.symbol,
+            )?;
         }
     };
     Ok(())
