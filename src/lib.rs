@@ -1,6 +1,4 @@
-mod opts;
+mod cli;
 mod process;
-
-pub use opts::{Opts, OutputFormat, SubCommand};
-pub use process::generate;
-pub use process::process_csv;
+pub use cli::{Base64SubCommand, Opts, OutputFormat, SubCommand};
+pub use process::{generate, process_csv, process_decode, process_encode};

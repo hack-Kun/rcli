@@ -1,5 +1,7 @@
 use clap::Parser;
-use rcli::{generate, process_csv, Opts, SubCommand};
+use rcli::{
+    generate, process_csv, process_decode, process_encode, Base64SubCommand, Opts, SubCommand,
+};
 
 fn main() -> anyhow::Result<()> {
     let cli = Opts::parse();
@@ -24,6 +26,14 @@ fn main() -> anyhow::Result<()> {
                 pass.no_symbol,
             )?;
         }
+        SubCommand::Base64(b64) => match b64 {
+            Base64SubCommand::Encoding(encode) => {
+                process_encode(&encode.input, encode.format)?;
+            }
+            Base64SubCommand::Decoding(decode) => {
+                process_decode(&decode.input, decode.format)?;
+            }
+        },
     };
     Ok(())
 }
