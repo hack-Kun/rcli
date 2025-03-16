@@ -35,3 +35,18 @@ fn verity_input_file(file_name: &str) -> Result<String, &'static str> {
         Err("文件不存在")
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_verity_input_file() {
+        let file_name = "-";
+        assert_eq!(verity_input_file(file_name).unwrap(), "-");
+        let file_name = "assets/juventus.csv";
+        assert_eq!(verity_input_file(file_name).unwrap(), "assets/juventus.csv");
+        let file_name = "abc.json";
+        assert_eq!(verity_input_file(file_name), Err("文件不存在"));
+    }
+}

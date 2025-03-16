@@ -45,3 +45,24 @@ fn get_reader(input: &str) -> Result<Box<dyn Read>> {
     };
     Ok(read)
 }
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+
+    #[test]
+    fn test_process_encode() {
+        let input = "Cargo.toml";
+        let format = Base64Format::Standard;
+        assert!(process_encode(input, format).is_ok());
+    }
+
+    #[test]
+
+    fn test_process_decode() {
+        let input = "fixtures/b64.txt";
+        let format = Base64Format::UrlSafe;
+        process_decode(input, format).unwrap();
+    }
+}
