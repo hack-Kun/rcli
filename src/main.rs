@@ -18,10 +18,10 @@ fn main() -> anyhow::Result<()> {
         SubCommand::GenPass(pass) => {
             generate(
                 pass.length,
-                pass.upper,
-                pass.lower,
-                pass.number,
-                pass.symbol,
+                pass.no_lower,
+                pass.no_upper,
+                pass.no_number,
+                pass.no_symbol,
             )?;
         }
     };

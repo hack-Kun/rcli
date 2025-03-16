@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 /// cli相关模块
-use clap::{Parser, Subcommand};
+use clap::{ArgAction, Parser, Subcommand};
 
 #[derive(Debug, Parser)]
 #[command(name="rcli", author, version, about, long_about = None)]
@@ -14,7 +14,10 @@ pub struct Opts {
 pub enum SubCommand {
     #[command(name = "csv", about = "解析csv文件")]
     CSV(CsvOpts),
-    #[command(name = "genpass", about = "generate random pass")]
+    #[command(
+        name = "genpass",
+        about = "generate random pass, default length is 16, include upper, lower, number, symbol"
+    )]
     GenPass(GenPassOpts),
 }
 
@@ -23,18 +26,18 @@ pub struct GenPassOpts {
     #[arg(short, long, default_value = "16")]
     /// generate pass length
     pub length: u8,
-    #[arg(short, long, default_value = "true")]
-    /// include upper case
-    pub upper: bool,
-    #[arg(long, default_value = "true")]
-    /// include lower case
-    pub lower: bool,
-    #[arg(short, long, default_value = "true")]
-    /// include number
-    pub number: bool,
-    #[arg(short, long, default_value = "true")]
-    /// include symbol
-    pub symbol: bool,
+    #[arg(long, action = ArgAction::SetTrue)]
+    /// not include lower case
+    pub no_upper: bool,
+    #[arg(long, action = ArgAction::SetTrue)]
+    /// not include lower case
+    pub no_lower: bool,
+    #[arg(long, action = ArgAction::SetTrue)]
+    /// not include number
+    pub no_number: bool,
+    #[arg(long, action = ArgAction::SetTrue)]
+    /// not include symbol
+    pub no_symbol: bool,
 }
 
 // ============================ csv 命令相关 ========================================
