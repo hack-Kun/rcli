@@ -1,4 +1,7 @@
 mod cli;
 mod process;
-pub use cli::{Base64SubCommand, Opts, OutputFormat, SubCommand};
-pub use process::{generate, process_csv, process_decode, process_encode};
+mod tool;
+pub use cli::{Base64SubCommand, Opts, OutputFormat, SubCommand, TextSubCommand};
+pub use process::{
+    generate, generate_key, process_csv, process_decode, process_encode, sign, verify,
+};

@@ -1,11 +1,13 @@
 mod base64;
 mod csv;
 mod genpass;
+mod text;
 
 pub use base64::{Base64Format, Base64SubCommand};
 use clap::{Parser, Subcommand};
 pub use csv::{CsvOpts, OutputFormat};
 pub use genpass::GenPassOpts;
+pub use text::{TextFormat, TextSubCommand};
 
 #[derive(Debug, Parser)]
 #[command(name="rcli", author, version, about, long_about = None)]
@@ -25,6 +27,8 @@ pub enum SubCommand {
     GenPass(GenPassOpts),
     #[command(subcommand)]
     Base64(Base64SubCommand),
+    #[command(subcommand)]
+    Text(TextSubCommand),
 }
 
 // 验证输入文件是否存在
@@ -33,6 +37,15 @@ fn verity_input_file(file_name: &str) -> Result<String, &'static str> {
         Ok(file_name.into())
     } else {
         Err("文件不存在")
+    }
+}
+
+// 验证输入是否为文件夹
+fn verity_input_dir(dir_name: &str) -> Result<String, &'static str> {
+    if std::path::Path::new(dir_name).is_dir() {
+        Ok(dir_name.into())
+    } else {
+        Err("文件夹不存在")
     }
 }
 

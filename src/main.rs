@@ -1,6 +1,7 @@
 use clap::Parser;
 use rcli::{
-    generate, process_csv, process_decode, process_encode, Base64SubCommand, Opts, SubCommand,
+    generate, process_csv, process_decode, process_encode, sign, Base64SubCommand, Opts,
+    SubCommand, TextSubCommand,
 };
 
 fn main() -> anyhow::Result<()> {
@@ -18,20 +19,34 @@ fn main() -> anyhow::Result<()> {
             process_csv(&csv.input, output, csv.format)?;
         }
         SubCommand::GenPass(pass) => {
-            generate(
+            let password = generate(
                 pass.length,
                 pass.no_lower,
                 pass.no_upper,
                 pass.no_number,
                 pass.no_symbol,
             )?;
+            println!("{}", password);
         }
         SubCommand::Base64(b64) => match b64 {
             Base64SubCommand::Encoding(encode) => {
-                process_encode(&encode.input, encode.format)?;
+                let res = process_encode(&encode.input, encode.format)?;
+                println!("{}", res);
             }
             Base64SubCommand::Decoding(decode) => {
-                process_decode(&decode.input, decode.format)?;
+                let res = process_decode(&decode.input, decode.format)?;
+                println!("{}", res);
+            }
+        },
+        SubCommand::Text(text) => match text {
+            TextSubCommand::Encry(encry) => {
+                sign(encry.key, encry.input, encry.format)?;
+            }
+            TextSubCommand::Verify(verify) => {
+                rcli::verify(verify.key, verify.input, verify.format, verify.sign)?;
+            }
+            TextSubCommand::Genpass(genpass) => {
+                rcli::generate_key(genpass.format, genpass.output)?;
             }
         },
     };
